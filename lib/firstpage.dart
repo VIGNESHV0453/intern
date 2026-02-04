@@ -19,12 +19,10 @@ class ImageListPage extends StatelessWidget {
       body: FutureBuilder<List<ImageModel>>(
         future: ImageApiService.fetchImages(),
         builder: (context, snapshot) {
-          // 1️⃣ Loading State
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          // 2️⃣ Error State
           if (snapshot.hasError) {
             return const Center(
               child: Text(
@@ -34,14 +32,12 @@ class ImageListPage extends StatelessWidget {
             );
           }
 
-          // 3️⃣ Data State
           final images = snapshot.data ?? [];
 
           if (images.isEmpty) {
             return const Center(child: Text('No images found'));
           }
 
-          // 4️⃣ Grid UI
           return GridView.builder(
             padding: const EdgeInsets.all(12),
             itemCount: images.length,
@@ -62,13 +58,11 @@ class ImageListPage extends StatelessWidget {
                   images[index].imageUrl,
                   fit: BoxFit.cover,
 
-                  // Image loading
                   loadingBuilder: (context, child, loadingProgress) {
                     if (loadingProgress == null) return child;
                     return const Center(child: CircularProgressIndicator());
                   },
 
-                  // Image error
                   errorBuilder: (context, error, stackTrace) {
                     return const Center(
                       child: Icon(Icons.broken_image, size: 40),
